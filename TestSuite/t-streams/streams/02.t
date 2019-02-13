@@ -3,7 +3,7 @@
 # FindStreams (FindFirstStreamW, FindNextStreamW, FindClose)
 
 from winfstest import *
-
+xrange=range
 name = uniqname()
 
 expect("CreateFile %s GENERIC_WRITE 0 0 CREATE_NEW FILE_ATTRIBUTE_NORMAL 0" % name, 0)

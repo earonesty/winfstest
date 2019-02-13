@@ -31,7 +31,9 @@
 # (INCLUDING NEGLIGENCE  OR OTHERWISE) ARISING IN  ANY WAY OUT OF  THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+from __future__ import print_function
 import re
+xrange=range
 
 _re_pl = re.compile(r"^(\d+)..(\d+)")
 _re_ok = re.compile(r"^ok (\d+)(.*)")
@@ -93,7 +95,7 @@ if "__main__" == __name__:
         totals = [0, 0]
         testenv_tmppath = ""
         if len(sys.argv)>2:
-			testenv_tmppath = sys.argv[2]
+            testenv_tmppath = sys.argv[2]
         for arg in [sys.argv[1]]:
             for dirpath, dirnames, filenames in walktree(arg):
                 for filename in filenames:
@@ -141,8 +143,8 @@ if "__main__" == __name__:
 
     try:
         main()
-    except subprocess.CalledProcessError, ex:
-        print >>sys.stderr
-        print >>sys.stderr, ex
-        print >>sys.stderr, ex.output
+    except subprocess.CalledProcessError as ex:
+        print() 
+        print(ex, file=sys.stderr)
+        print(ex.output, file=sys.stderr)
         sys.exit(ex.returncode)

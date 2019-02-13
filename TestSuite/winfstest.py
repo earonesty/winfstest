@@ -29,7 +29,9 @@
 # (INCLUDING NEGLIGENCE  OR OTHERWISE) ARISING IN  ANY WAY OUT OF  THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+from __future__ import print_function
 import inspect, os, random, subprocess, sys, threading, types
+import six
 
 __all__ = [
     "testline", "testeval", "testdone", "uniqname",
@@ -39,7 +41,7 @@ _ntests = 0
 def testline(ok, diag = ""):
     global _ntests
     _ntests += 1
-    print "%sok %s%s%s" % ("" if ok else "not ", _ntests, " - " if diag else "", diag)
+    print("%sok %s%s%s" % ("" if ok else "not ", _ntests, " - " if diag else "", diag))
 def testeval(ok):
     diag = inspect.stack()[1]
     if diag and diag[4] is not None and diag[5] is not None:
@@ -50,7 +52,7 @@ def testeval(ok):
     testline(ok, diag)
 def testdone():
     global _ntests
-    print "1..%s" % _ntests
+    print("1..%s" % _ntests)
     _ntests = 0
 
 def uniqname():
@@ -81,7 +83,7 @@ class _fstest_task(object):
     def __exit__(self, type, value, traceback):
         if self.tsk:
             try:
-                self.prc.stdin.write("\n")
+                self.prc.stdin.write(six.b("\n"))
             except IOError:
                 pass
         self.prc.stdin.close()
@@ -94,7 +96,7 @@ class _fstest_task(object):
         if self.exp is not None:
             self._expect(self.cmd, self.exp, self.err, self.res, self.expdiagvalue)
     def _readthread(self):
-        self.out = self.prc.stdout.read()
+        self.out = self.prc.stdout.read().decode("utf8")
         self.out = self.out.replace("\r\n", "\n").replace("\r", "\n")
     def _fstest_res(self):
         out = self.out.splitlines()
@@ -143,7 +145,7 @@ def fstest_task(cmd):
     return _fstest_task(True, cmd, None)
 def expect_task(cmd, exp):
     if isinstance(exp, types.FunctionType): # function, lambda
-        print "# expect_task \"%s\" %s" % (cmd, exp.__name__)
+        print("# expect_task \"%s\" %s" % (cmd, exp.__name__))
     else:
-        print "# expect_task \"%s\" %s" % (cmd, exp)
+        print("# expect_task \"%s\" %s" % (cmd, exp))
     return _fstest_task(True, cmd, exp)
