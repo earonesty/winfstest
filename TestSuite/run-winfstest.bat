@@ -1,5 +1,7 @@
 @echo off
 
+cd
+
 set PythonRegKey=HKLM\SOFTWARE\Python\PythonCore\3.6
 reg query %PythonRegKey%\InstallPath /ve >nul 2>&1 || (set PythonRegKey=HKCU\SOFTWARE\Python\PythonCore\3.6)
 reg query %PythonRegKey%\InstallPath /ve >nul 2>&1 || (set PythonRegKey=HKLM\SOFTWARE\Python\PythonCore\2.7)
