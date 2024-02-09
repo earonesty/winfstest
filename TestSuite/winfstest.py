@@ -30,8 +30,9 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from __future__ import print_function
-import inspect, os, random, subprocess, sys, threading, types
+import inspect, os, subprocess, sys, threading, types
 import six
+import secrets
 
 __all__ = [
     "testline", "testeval", "testdone", "uniqname",
@@ -59,7 +60,7 @@ def uniqname():
     path = ""
     if len(sys.argv)>0:
         path = os.path.normpath(sys.argv[1]) + "\\"
-    return path + "%08x" % random.randint(1, 2 ** 32)
+    return path + "%08x" % secrets.SystemRandom().randint(1, 2 ** 32)
 
 _fstest_exe = os.path.splitext(os.path.realpath(__file__))[0] + ".exe"
 class _fstest_task(object):
