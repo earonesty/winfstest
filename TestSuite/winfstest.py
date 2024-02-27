@@ -32,6 +32,7 @@
 from __future__ import print_function
 import inspect, os, random, subprocess, sys, threading, types
 import six
+from security import safe_command
 
 __all__ = [
     "testline", "testeval", "testdone", "uniqname",
@@ -74,7 +75,7 @@ class _fstest_task(object):
         arg = cmd.split() if hasattr(cmd, "split") else list(cmd)
         if self.tsk:
             arg.insert(0, "-w")
-        self.prc = subprocess.Popen([_fstest_exe] + arg,
+        self.prc = safe_command.run(subprocess.Popen, [_fstest_exe] + arg,
             stdin=subprocess.PIPE, stdout=subprocess.PIPE)
         self.thr = threading.Thread(target=self._readthread)
         self.thr.start()
